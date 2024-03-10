@@ -6,13 +6,6 @@ using Models;
 
 namespace Controllers
 {
-    //
-    public class ProdutoCadastro
-    {
-        public string Nome { get; set; }
-    }
-    //
-
     [Route("api/[controller]")]
     [ApiController]
     public class ProdutoController : ControllerBase
@@ -22,7 +15,7 @@ namespace Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Produto>> ObterLista()
         {
-            try 
+            try
             {
                 var produtos = Contexto.Produtos.ToList();
 
@@ -33,7 +26,7 @@ namespace Controllers
                 return StatusCode(500, "O problema foi sério, mas a gente passa bem!");
             }
         }
-        
+
         [HttpGet("{id}")]
         public ActionResult<Produto> ObterPelaId(Guid id)
         {
@@ -42,7 +35,7 @@ namespace Controllers
                 var produto = Contexto.Produtos.Find(id);
                 // var produto = Contexto.Produtos.FirstOrDefault(p => p.Id == id);
 
-                if(produto == null)
+                if (produto == null)
                 {
                     return BadRequest();
                 }
@@ -56,17 +49,16 @@ namespace Controllers
         }
 
         [HttpPost]
-        public ActionResult<Produto> Criar([FromBody] ProdutoCadastro novoProduto)
+        public ActionResult<Produto> Criar([FromBody] Produto novoProduto)
         {
-            try 
+            try
             {
-                var produto = new Produto { Nome = novoProduto.Nome };
-                
-                Contexto.Produtos.Add(produto);
+                //var produto = new Produto { Nome = novoProduto.Nome };
+
+                Contexto.Produtos.Add(novoProduto);
                 Contexto.SaveChanges();
 
-                // return Created();
-                return CreatedAtAction(nameof(ObterPelaId), produto);
+                return Created();
             }
             catch
             {
@@ -82,7 +74,7 @@ namespace Controllers
                 var produto = Contexto.Produtos.Find(id);
                 // var produto = Contexto.Produtos.FirstOrDefault(p => p.Id == id);
 
-                if(produto == null || produto.Id != produtoAtualizado.Id)
+                if (produto == null || produto.Id != produtoAtualizado.Id)
                 {
                     return BadRequest();
                 }
@@ -107,7 +99,7 @@ namespace Controllers
                 var produto = Contexto.Produtos.Find(id);
                 // var produto = Contexto.Produtos.FirstOrDefault(p => p.Id == id);
 
-                if(produto == null)
+                if (produto == null)
                 {
                     return BadRequest();
                 }
